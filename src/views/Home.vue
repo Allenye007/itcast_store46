@@ -1,6 +1,19 @@
 <template>
   <el-container class="container">
-    <el-header class="header">Header</el-header>
+    <el-header class="header">
+      <!-- 栅格系统 -->
+      <el-row>
+        <el-col :span="4">
+          <img src="/static/logo.png" alt="">
+        </el-col>
+        <el-col class="middle" :span="19">
+          <h2>电商后台管理系统</h2>
+        </el-col>
+        <el-col :span="1">
+          <a class="logout" href="#">退出</a>
+        </el-col>
+      </el-row>
+    </el-header>
     <el-container>
       <el-aside class="aside" width="200px">Aside</el-aside>
       <el-main class="main">Main</el-main>
@@ -21,6 +34,18 @@ export default {
 
 .header {
   background-color: #b3c0d1;
+  padding: 0;
+}
+.header .middle {
+  line-height: 60px;
+  color: #fff;
+  text-align: center;
+}
+
+.header .logout {
+  line-height: 60px;
+  text-decoration: none;
+  color: orange;
 }
 
 .aside {
