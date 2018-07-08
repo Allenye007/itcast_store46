@@ -21,25 +21,29 @@
     <el-table
       stripe
       border
-      :data="tableData"
+      :data="list"
       style="width: 100%">
       <el-table-column
         type="index"
         width="50">
       </el-table-column>
       <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
+        prop="username"
         label="姓名"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="地址">
+        prop="email"
+        label="邮箱"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="mobile"
+        label="电话">
+      </el-table-column>
+      <el-table-column
+        prop="mg_state"
+        label="用户状态">
       </el-table-column>
     </el-table>
   </el-card>
@@ -49,24 +53,34 @@
 export default {
   data() {
     return {
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }]
-    };
+      // 用户列表数据
+      list: []
+    };     
+  },
+  created() {
+    // 发送请求获取数据
+    this.loadData();
+  },
+  methods: {
+    // 发送异步请求，获取数据
+    async loadData() {
+      // 发送请求之前，获取token
+      const token = sessionStorage.getItem('token');
+      // 在请求头中设置token
+      this.$http.defaults.headers.common['Authorization'] = token;
+
+      const res = await this.$http.get('users?pagenum=1&pagesize=10');
+      // 获取响应数据
+      const data = res.data;
+      // meta中的msg 和 status
+      const { meta: { msg, status } } = data;
+      if (status === 200) {
+        const { data: { users } } = data;
+        this.list = users;
+      } else {
+        this.$message.error(msg);
+      }
+    }
   }
 };
 </script>
