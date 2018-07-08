@@ -12,7 +12,7 @@
       <el-form-item label="密码">
         <el-input type="password" v-model="formData.password"></el-input>
       </el-form-item>
-      <el-button class="login-button" type="primary">主要按钮</el-button>
+      <el-button class= "login-button" type="primary">登录</el-button>
     </el-form>
   </div>
 </template>
