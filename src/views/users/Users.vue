@@ -30,7 +30,7 @@
       <el-table-column
         prop="username"
         label="姓名"
-        width="180">
+        width="100">
       </el-table-column>
       <el-table-column
         prop="email"
@@ -42,7 +42,13 @@
         label="电话">
       </el-table-column>
       <el-table-column
-        label="用户状态">
+        label="创建日期">
+        <template slot-scope="scope">
+          {{ scope.row.create_time | fmtDate('YYYY-MM-DD') }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="用户状态" width="100">
         <template slot-scope="scope">
           <!-- scope.row 就是当前行绑定的数据对象 -->
           <el-switch
@@ -70,7 +76,7 @@ export default {
     return {
       // 用户列表数据
       list: []
-    };     
+    };
   },
   created() {
     // 发送请求获取数据
