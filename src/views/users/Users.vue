@@ -45,6 +45,15 @@
       <el-table-column
         label="创建日期">
         <template slot-scope="scope">
+          <!-- 当前行绑定到的数据对象 -- 用户对象 -->
+          <!-- {{ scope.row }} -->
+          <!-- <hr> -->
+          <!-- 当前行的索引 -->
+          <!-- {{ scope.$index }} -->
+          <!-- <hr> -->
+          <!-- 当前列的配置内容 -->
+          <!-- {{ scope.column }} -->
+          <!-- <hr> -->
           {{ scope.row.create_time | fmtDate('YYYY-MM-DD') }}
         </template>
       </el-table-column>
@@ -97,7 +106,7 @@ export default {
       this.$http.defaults.headers.common['Authorization'] = token;
 
       const res = await this.$http.get('users?pagenum=1&pagesize=10');
-      
+
       // 异步请求结束
       this.loading = false;
 
