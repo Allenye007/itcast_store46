@@ -45,6 +45,14 @@
         prop="mg_state"
         label="用户状态">
       </el-table-column>
+      <el-table-column
+        label="操作">
+        <template slot-scope="scope">
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
+          <el-button plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
+          <el-button plain size="mini" type="success" icon="el-icon-check" ></el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </el-card>
 </template>
