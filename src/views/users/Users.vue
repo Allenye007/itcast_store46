@@ -42,8 +42,15 @@
         label="电话">
       </el-table-column>
       <el-table-column
-        prop="mg_state"
         label="用户状态">
+        <template slot-scope="scope">
+          <!-- scope.row 就是当前行绑定的数据对象 -->
+          <el-switch
+            v-model="scope.row.mg_state"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
+        </template>
       </el-table-column>
       <el-table-column
         label="操作">
