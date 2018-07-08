@@ -12,7 +12,7 @@
       <el-form-item label="密码">
         <el-input type="password" v-model="formData.password"></el-input>
       </el-form-item>
-      <el-button class= "login-button" type="primary">登录</el-button>
+      <el-button @click="handleLogin" class="login-button" type="primary">登录</el-button>
     </el-form>
   </div>
 </template>
@@ -27,6 +27,34 @@ export default {
         password: ''
       }
     };
+  },
+  methods: {
+    // 点击按钮，登录
+    handleLogin() {
+      this.$http
+        .post('login', this.formData)
+        .then((res) => {
+          // res -> { status: 200, data: { data: , meta: {  } } }
+          // const { data: { data: { token }, meta: { status, msg } } }
+
+          // 服务器返回的数据格式
+          // { data: {}, meta: { status: 200, msg: '' } }
+          const data = res.data;
+          const { meta: { status, msg } } = data;
+          if (status === 200) {
+            // 登录成功
+            const token = data.data.token;
+            // 跳转到后台首页
+            // 记录token，sesstionStorage
+            sessionStorage.setItem('token', token);
+            // 成功提示
+            this.$message.success(msg);
+          } else {
+            // 失败
+            this.$message.error(msg);
+          }
+        });
+    }
   }
 };
 </script>
