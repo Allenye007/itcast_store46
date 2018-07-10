@@ -122,7 +122,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addUserDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addUserDialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleAdd">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -227,7 +227,6 @@ export default {
     // 2. 提示是否删除
     // 3. 发送请求
     async handleDelete(id) {
-      
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -260,6 +259,29 @@ export default {
           message: '已取消删除'
         });          
       });
+    },
+    // 添加用户的对话框中的确定按钮，要执行添加用户的操作
+    async handleAdd() {
+      const res = await this.$http.post('users', this.formData);
+
+      // 相当于回调函数中的处理
+      const data = res.data;
+      const { meta: { status, msg } } = data;
+      if (status === 201) {
+        // 添加成功
+        // 隐藏对话框
+        this.addUserDialogVisible = false;
+        // 提示成功
+        this.$message.success(msg);
+        // 重新加载数据
+        this.loadData();
+        // 清空文本框的值
+        for (let key in this.formData) {
+          this.formData[key] = '';
+        }
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
