@@ -105,12 +105,14 @@
     <!-- 添加用户的弹出框 -->
     <el-dialog title="添加用户" :visible.sync="addUserDialogVisible">
       <el-form
+        ref="myform"
+        :rules="formRules"
         label-width="100px"
         :model="formData">
-        <el-form-item label="用户名">
+        <el-form-item label="用户名" prop="username">
           <el-input v-model="formData.username" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
           <el-input type="password" v-model="formData.password" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="邮箱">
@@ -153,6 +155,17 @@ export default {
         password: '',
         email: '',
         mobile: ''
+      },
+      // 表单的验证规则
+      formRules: {
+        username: [
+          { required: true, message: '请输入用户名称', trigger: 'blur' },
+          { min: 1, max: 6, message: '长度在 1 到 6 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ],
       }
     };
   },
@@ -262,26 +275,33 @@ export default {
     },
     // 添加用户的对话框中的确定按钮，要执行添加用户的操作
     async handleAdd() {
-      const res = await this.$http.post('users', this.formData);
-
-      // 相当于回调函数中的处理
-      const data = res.data;
-      const { meta: { status, msg } } = data;
-      if (status === 201) {
-        // 添加成功
-        // 隐藏对话框
-        this.addUserDialogVisible = false;
-        // 提示成功
-        this.$message.success(msg);
-        // 重新加载数据
-        this.loadData();
-        // 清空文本框的值
-        for (let key in this.formData) {
-          this.formData[key] = '';
+      // 表单的 DOM对象 this.$refs.myform
+      this.$refs.myform.validate(async (valid) => {
+        if (!valid) {
+          return this.$message.error('请完整输入内容');
         }
-      } else {
-        this.$message.error(msg);
-      }
+        // 表单验证成功，添加的操作
+        const res = await this.$http.post('users', this.formData);
+
+        // 相当于回调函数中的处理
+        const data = res.data;
+        const { meta: { status, msg } } = data;
+        if (status === 201) {
+          // 添加成功
+          // 隐藏对话框
+          this.addUserDialogVisible = false;
+          // 提示成功
+          this.$message.success(msg);
+          // 重新加载数据
+          this.loadData();
+          // 清空文本框的值
+          for (let key in this.formData) {
+            this.formData[key] = '';
+          }
+        } else {
+          this.$message.error(msg);
+        }
+      });
     }
   }
 };
