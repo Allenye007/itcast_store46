@@ -174,7 +174,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="setRoleDialogVisible = false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" @click="handleSetRole">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -224,6 +224,7 @@ export default {
       setRoleDialogVisible: false,
       // 分配角色需要的数据
       currentUserName: '',
+      currentUserId: -1,
       currentRoleId: -1,
       roles: []
     };
@@ -408,6 +409,8 @@ export default {
     },
     // 点击分配权限按钮，打开分配权限的对话框
     async handleShowSetRoleDialog(user) {
+      // 记录当前用户的id
+      this.currentUserId = user.id;
       // user用户对象
       // console.log(user);
       this.currentUserName = user.username;
@@ -420,6 +423,29 @@ export default {
       // 根据用户id查询用户对象，角色id
       const res1 = await this.$http.get(`users/${user.id}`);
       this.currentRoleId = res1.data.data.rid;
+    },
+    // 分配角色
+    async handleSetRole() {
+      const res = await this.$http.put(`users/${this.currentUserId}/role`, {
+        rid: this.currentRoleId
+      });
+
+      const data = res.data;
+      const { meta: { status, msg } } = data;
+      if (status === 200) {
+        // 成功
+        // 关闭对话框
+        this.setRoleDialogVisible = false;
+        // 提示
+        this.$message.success(msg);
+        // 重置数据
+        this.currentUserName = '';
+        this.currentUserId = -1;
+        this.currentRoleId = -1;
+      } else {
+        // 失败
+        this.$message.error(msg);
+      }
     }
   }
 };
