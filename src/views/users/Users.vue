@@ -78,7 +78,7 @@
         <template slot-scope="scope">
           <el-button @click="handleShowEditDialog(scope.row)" plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
           <el-button @click="handleDelete(scope.row.id)" plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
-          <el-button plain size="mini" type="success" icon="el-icon-check" ></el-button>
+          <el-button @click="setRoleDialogVisible=true" plain size="mini" type="success" icon="el-icon-check" ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -150,6 +150,27 @@
         <el-button type="primary" @click="handleEdit">确 定</el-button>
       </div>
     </el-dialog>
+
+    <!-- 分配用户角色的弹出框 -->
+    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible">
+      <el-form
+        label-width="100px">
+        <el-form-item label="用户名" prop="username">
+          <el-input disabled auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-select>
+            <el-option disabled label="请选择" value="-1">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </el-card>
 </template>
 
@@ -191,7 +212,9 @@ export default {
         ]
       },
       // 控制编辑用户的对话框显示或者隐藏
-      editUserDialogVisible: false
+      editUserDialogVisible: false,
+      // 控制分配角色对话框的显示或者隐藏
+      setRoleDialogVisible: false
     };
   },
   created() {
