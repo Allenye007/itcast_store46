@@ -78,7 +78,7 @@
         <template slot-scope="scope">
           <el-button @click="handleShowEditDialog(scope.row)" plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
           <el-button @click="handleDelete(scope.row.id)" plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
-          <el-button @click="setRoleDialogVisible=true" plain size="mini" type="success" icon="el-icon-check" ></el-button>
+          <el-button @click="handleShowSetRoleDialog(scope.row)" plain size="mini" type="success" icon="el-icon-check" ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -156,11 +156,18 @@
       <el-form
         label-width="100px">
         <el-form-item label="用户名" prop="username">
-          <el-input disabled auto-complete="off"></el-input>
+          {{ currentUserName }}
         </el-form-item>
         <el-form-item label="角色">
-          <el-select>
-            <el-option disabled label="请选择" value="-1">
+          <el-select v-model="currentRoleId">
+            <!-- 注意：下拉框绑定的值的类型，应该跟option的value的值的类型是一致的 -->
+            <el-option disabled label="请选择" :value="-1">
+            </el-option>
+            <el-option
+              v-for="item in roles"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -214,7 +221,11 @@ export default {
       // 控制编辑用户的对话框显示或者隐藏
       editUserDialogVisible: false,
       // 控制分配角色对话框的显示或者隐藏
-      setRoleDialogVisible: false
+      setRoleDialogVisible: false,
+      // 分配角色需要的数据
+      currentUserName: '',
+      currentRoleId: -1,
+      roles: []
     };
   },
   created() {
@@ -394,6 +405,21 @@ export default {
       for (let key in this.formData) {
         this.formData[key] = '';
       }
+    },
+    // 点击分配权限按钮，打开分配权限的对话框
+    async handleShowSetRoleDialog(user) {
+      // user用户对象
+      // console.log(user);
+      this.currentUserName = user.username;
+      // 显示对话框
+      this.setRoleDialogVisible = true;
+      // 获取所有的角色
+      const res = await this.$http.get('roles');
+      this.roles = res.data.data;
+
+      // 根据用户id查询用户对象，角色id
+      const res1 = await this.$http.get(`users/${user.id}`);
+      this.currentRoleId = res1.data.data.rid;
     }
   }
 };
