@@ -103,7 +103,7 @@
     </el-pagination>
 
     <!-- 添加用户的弹出框 -->
-    <el-dialog title="添加用户" :visible.sync="addUserDialogVisible">
+    <el-dialog @closed="handleClosed" title="添加用户" :visible.sync="addUserDialogVisible">
       <el-form
         ref="myform"
         :rules="formRules"
@@ -129,7 +129,7 @@
     </el-dialog>
 
     <!-- 修改用户的弹出框 -->
-    <el-dialog title="编辑用户" :visible.sync="editUserDialogVisible">
+    <el-dialog @closed="handleClosed" title="编辑用户" :visible.sync="editUserDialogVisible">
       <el-form
         ref="myform"
         :rules="formRules"
@@ -320,9 +320,9 @@ export default {
           // 重新加载数据
           this.loadData();
           // 清空文本框的值
-          for (let key in this.formData) {
-            this.formData[key] = '';
-          }
+          // for (let key in this.formData) {
+          //   this.formData[key] = '';
+          // }
         } else {
           this.$message.error(msg);
         }
@@ -333,7 +333,10 @@ export default {
       // 显示对话框
       this.editUserDialogVisible = true;
       // 文本框显示用户信息
-      this.formData = user;
+      this.formData.username = user.username;
+      this.formData.email = user.email;
+      this.formData.mobile = user.mobile;
+      this.formData.id = user.id;
     },
     // 点击确定按钮，实现修改用户
     async handleEdit() {
@@ -354,12 +357,19 @@ export default {
         this.editUserDialogVisible = false;
         // 重新加载列表
         this.loadData();
-        // 清空文本框
-        for (let key in this.formData) {
-          this.formData[key] = '';
-        }
+        // // 清空文本框
+        // for (let key in this.formData) {
+        //   this.formData[key] = '';
+        // }
       } else {
         this.$message.error(msg);
+      }
+    },
+    // 添加和修改的对话框关闭以后执行
+    handleClosed() {
+      // 清空文本框
+      for (let key in this.formData) {
+        this.formData[key] = '';
       }
     }
   }
