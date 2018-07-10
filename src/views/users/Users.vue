@@ -147,7 +147,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="editUserDialogVisible = false">取 消</el-button>
-        <el-button type="primary">确 定</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
       </div>
     </el-dialog>
   </el-card>
@@ -188,7 +188,7 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
-        ],
+        ]
       },
       // 控制编辑用户的对话框显示或者隐藏
       editUserDialogVisible: false
@@ -295,7 +295,7 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     },
     // 添加用户的对话框中的确定按钮，要执行添加用户的操作
@@ -334,6 +334,33 @@ export default {
       this.editUserDialogVisible = true;
       // 文本框显示用户信息
       this.formData = user;
+    },
+    // 点击确定按钮，实现修改用户
+    async handleEdit() {
+      // console.log(this.formData);
+      const res = await this.$http.put(`users/${this.formData.id}`, {
+        mobile: this.formData.mobile,
+        email: this.formData.email
+      });
+      // 解析数据
+      const data = res.data;
+      const { meta: { status, msg } } = data;
+      // 判断
+      if (status === 200) {
+        // 修改成功
+        // 提示成功
+        this.$message.success(msg);
+        // 关闭对话框
+        this.editUserDialogVisible = false;
+        // 重新加载列表
+        this.loadData();
+        // 清空文本框
+        for (let key in this.formData) {
+          this.formData[key] = '';
+        }
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
