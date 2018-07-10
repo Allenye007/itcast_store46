@@ -76,7 +76,7 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button @click="editUserDialogVisible=true" plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
+          <el-button @click="handleShowEditDialog(scope.row)" plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
           <el-button @click="handleDelete(scope.row.id)" plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
           <el-button plain size="mini" type="success" icon="el-icon-check" ></el-button>
         </template>
@@ -327,6 +327,13 @@ export default {
           this.$message.error(msg);
         }
       });
+    },
+    // 点击编辑按钮，弹出编辑的对话框
+    handleShowEditDialog(user) {
+      // 显示对话框
+      this.editUserDialogVisible = true;
+      // 文本框显示用户信息
+      this.formData = user;
     }
   }
 };
