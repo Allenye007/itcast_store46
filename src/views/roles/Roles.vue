@@ -28,7 +28,19 @@
               <el-tag>{{ item1.authName }}</el-tag>
             </el-col>
             <!-- 二级和三级权限 -->
-            <el-col :span="20"></el-col>
+            <el-col :span="20">
+
+              <!-- 二级权限 -->
+              <el-row
+                v-for="item2 in item1.children"
+                :key="item2.id">
+                <el-col :span="4">
+                  <!-- 显示二级权限 -->
+                  <el-tag type="success">{{ item2.authName }}</el-tag>
+                </el-col>
+                <el-col :span="20"></el-col>
+              </el-row>
+            </el-col>
           </el-row>
         </template>
       </el-table-column>
