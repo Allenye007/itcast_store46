@@ -17,7 +17,19 @@
       <!-- 展开列 -->
       <el-table-column type="expand">
         <template slot-scope="scope">
-          <el-tag @close="hanldeClose" type="success" closable>哈哈哈</el-tag>
+          <!-- 当前角色中的权限列表 -->
+          <!-- scope.row 角色对象 ---- roleName, roleDesc, children -->
+          <!-- 一级权限 item1 -->
+          <el-row
+            v-for="item1 in scope.row.children"
+            :key="item1.id">
+            <el-col :span="4">
+              <!-- 显示一级权限 -->
+              <el-tag>{{ item1.authName }}</el-tag>
+            </el-col>
+            <!-- 二级和三级权限 -->
+            <el-col :span="20"></el-col>
+          </el-row>
         </template>
       </el-table-column>
       <el-table-column
