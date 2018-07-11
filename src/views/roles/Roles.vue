@@ -26,7 +26,7 @@
             :key="item1.id">
             <el-col :span="4">
               <!-- 显示一级权限 -->
-              <el-tag closable>{{ item1.authName }}</el-tag>
+              <el-tag @close="hanldeClose(scope.row.id, item1.id)" closable>{{ item1.authName }}</el-tag>
               <i class="el-icon-arrow-right"></i>
             </el-col>
             <!-- 二级和三级权限 -->
@@ -37,12 +37,13 @@
                 :key="item2.id">
                 <el-col :span="4">
                   <!-- 显示二级权限 -->
-                  <el-tag closable type="success">{{ item2.authName }}</el-tag>
+                  <el-tag @close="hanldeClose(scope.row.id, item2.id)"  closable type="success">{{ item2.authName }}</el-tag>
                   <i class="el-icon-arrow-right"></i>
                 </el-col>
                 <el-col :span="20">
                   <!-- 三级权限 -->
                   <el-tag
+                    @close="hanldeClose(scope.row.id, item3.id)" 
                     class="level3"
                     closable
                     type="warning"
@@ -119,8 +120,18 @@ export default {
       }
     },
     // 标签的关闭事件
-    hanldeClose() {
-      console.log('关闭');
+    async hanldeClose(roleId, rightId) {
+      // roleId 角色id  rightId 权限id
+      const { data: resData } = await this.$http.delete(`roles/${roleId}/rights/${rightId}`);
+      const { meta: { status, msg } } = resData;
+      if (status === 200) {
+        // 成功
+        this.$message.success(msg);
+        this.loadData();
+      } else {
+        // 失败
+        this.$message.error(msg);
+      }
     }
   }
 };
