@@ -89,7 +89,18 @@
     <el-dialog
       title="分配权限"
       :visible.sync="dialogVisible">
-      <span>这是一段信息</span>
+
+      <!-- 树形结构
+        data: 提供树形数据
+        props: 设置数据中显示的属性
+       -->
+      <el-tree
+        :data="treeData"
+        :props="defaultProps"
+        show-checkbox
+        default-expand-all>
+      </el-tree>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -105,7 +116,12 @@ export default {
       list: [],
       loading: true,
       // 控制分配权限的对话框显示或隐藏
-      dialogVisible: false
+      dialogVisible: false,
+      // 绑定tree所用的数据
+      treeData: [],
+      // 配置要展示数据中的哪个属性
+      defaultProps: {
+      }
     };
   },
   created() {
