@@ -69,10 +69,7 @@ export default {
 </script>
 
 <style>
-.box-card {
-  height: 100%;
-  overflow: auto;
-}
+
 .tb {
   margin-top: 10px;
 }
