@@ -25,7 +25,7 @@
           <el-submenu
             v-for="item in menus"
             :key="item.id"
-            :index="item.id">
+            :index="item.id + ''">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{ item.authName }}</span>
@@ -78,6 +78,8 @@ export default {
       const { data, meta: { status, msg } } = resData;
       if (status === 200) {
         this.menus = data;
+      } else {
+        this.$message.error(msg);
       }
     },
     // 退出

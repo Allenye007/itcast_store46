@@ -43,7 +43,7 @@
                 <el-col :span="20">
                   <!-- 三级权限 -->
                   <el-tag
-                    @close="hanldeClose(scope.row, item3.id)" 
+                    @close="hanldeClose(scope.row, item3.id)"
                     class="level3"
                     closable
                     type="warning"
@@ -196,7 +196,7 @@ export default {
 
       this.dialogVisible = true;
       // 获取当前角色所拥有的权限的id
-      
+
       // 遍历一级权限
       const arr = [];
       role.children.forEach((item1) => {
