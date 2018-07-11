@@ -11,6 +11,7 @@
 
     <!-- 表格 -->
     <el-table
+      v-loading="loading"
       :data="list"
       style="width: 100%">
       <el-table-column
@@ -29,6 +30,11 @@
       </el-table-column>
       <el-table-column
         label="操作">
+        <template slot-scope="scope">
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
+          <el-button plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
+          <el-button plain size="mini" type="success" icon="el-icon-check" ></el-button>
+        </template>
       </el-table-column>
     </el-table>
   </el-card>
@@ -38,7 +44,8 @@
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      loading: true
     };
   },
   created() {
@@ -47,12 +54,15 @@ export default {
   methods: {
     // 加载角色列表
     async loadData() {
+      this.loading = true;
       // 获取响应对象 response  { data: {...}, status: }
       // const res = await this.$http.get('roles');
       // console.log(res);
 
       // resData 是服务器返回的数据
       const { data: resData } = await this.$http.get('roles');
+
+      this.loading = false;
 
       // data, status, msg
       const { data, meta: { status, msg } } = resData;
