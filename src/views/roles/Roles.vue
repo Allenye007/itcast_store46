@@ -17,7 +17,7 @@
       <!-- 展开列 -->
       <el-table-column type="expand">
         <template slot-scope="scope">
-          哈哈哈
+          <el-tag @close="hanldeClose" type="success" closable>哈哈哈</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -77,6 +77,10 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    // 标签的关闭事件
+    hanldeClose() {
+      console.log('关闭');
     }
   }
 };
