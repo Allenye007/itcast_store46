@@ -5,6 +5,7 @@ import Login from '@/views/Login';
 import Home from '@/views/Home';
 import Users from '@/views/users/Users.vue';
 import Rights from '@/views/roles/Rights';
+import Roles from '@/views/roles/Roles';
 
 Vue.use(Router);
 
@@ -32,6 +33,11 @@ export default new Router({
           name: 'rights',
           path: '/rights',
           component: Rights
+        },
+        {
+          name: 'roles',
+          path: '/roles',
+          component: Roles
         }
       ]
     }
