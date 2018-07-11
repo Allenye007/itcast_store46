@@ -11,6 +11,7 @@
 
     <!-- 表格 -->
     <el-table
+      v-loading="loading"
       stripe
       border
       :data="list"
@@ -63,6 +64,7 @@ export default {
   data() {
     return {
       list: [],
+      loading: true,
       // 分页数据
       pagenum: 1,
       pagesize: 5,
@@ -75,16 +77,25 @@ export default {
   methods: {
     // 加载列表数据
     async loadData() {
-      const { data: resData } = await this.$http.get('categories?type=3');
+      this.loading = true;
+      const { data: resData } = await this.$http.get(`categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
 
-      const { data } = resData;
-      this.list = data;
+      this.loading = false;
+
+      const { data: { result, total } } = resData;
+      this.list = result;
+      // 获取总条数
+      this.total = total;
     },
     // 分页方法
     handleSizeChange(val) {
+      this.pagesize = val;
+      this.loadData();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.pagenum = val;
+      this.loadData();
       console.log(`当前页: ${val}`);
     }
   }
