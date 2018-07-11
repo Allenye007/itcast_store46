@@ -134,7 +134,9 @@ export default {
         label: 'authName'
       },
       // 获取要选择的节点的id
-      checkedList: []
+      checkedList: [],
+      // 记录当前修改的角色id
+      currentRoleId: -1
     };
   },
   created() {
@@ -189,6 +191,9 @@ export default {
     },
     // 点击按钮，显示分配权限的对话框
     handleShowRightsDialog(role) {
+      // 记录角色id， 分配权限的时候使用
+      this.currentRoleId = role.id;
+
       this.dialogVisible = true;
       // 获取当前角色所拥有的权限的id
       
@@ -208,16 +213,29 @@ export default {
       this.checkedList = arr;
     },
     // 点击确定按钮，分配权限
-    handleSetRights() {
+    async handleSetRights() {
       // 获取到被选中的节点的id
       const checkedKeys = this.$refs.tree.getCheckedKeys();
       // 获取到半选的节点的id
       const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys();
-
-      console.log(checkedKeys);
-      console.log(halfCheckedKeys);
-
       const newArray = [...checkedKeys, ...halfCheckedKeys];
+
+      const { data: resData } = await this.$http.post(`roles/${this.currentRoleId}/rights`, {
+        rids: newArray.join(',')
+      });
+
+      const { meta: { status, msg } } = resData;
+      if (status === 200) {
+        // 成功
+        // 关闭对话框
+        this.dialogVisible = false;
+        // 提示
+        this.$message.success(msg);
+        // 重新加载数据
+        this.loadData();
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
