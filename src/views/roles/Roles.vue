@@ -87,18 +87,23 @@
 
     <!-- 分配权限的对话框 -->
     <el-dialog
-      v-loading="loadingTree"
       @open="handleOpenDialog"
       title="分配权限"
       :visible.sync="dialogVisible">
-
       <!-- 树形结构
         data: 提供树形数据
         props: 设置数据中显示的属性
+
+        node-key - 给每一个节点一个表示 ，一般绑定id
+        当要使用default-expanded-keys和default-checked-keys必须先设置node-key
+        default-checked-keys 设置默认选中的节点
        -->
       <el-tree
+        v-loading="loadingTree"
         :data="treeData"
         :props="defaultProps"
+        node-key="id"
+        :default-checked-keys="checkedList"
         show-checkbox
         default-expand-all>
       </el-tree>
@@ -126,7 +131,9 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'authName'
-      }
+      },
+      // 获取要选择的节点的id
+      checkedList: []
     };
   },
   created() {
@@ -175,6 +182,7 @@ export default {
       const { data: resData } = await this.$http.get('rights/tree');
 
       this.loadingTree = false;
+
       const { data } = resData;
       this.treeData = data;
     }
