@@ -21,11 +21,12 @@
           <!-- scope.row 角色对象 ---- roleName, roleDesc, children -->
           <!-- 一级权限 item1 -->
           <el-row
+            class="level1"
             v-for="item1 in scope.row.children"
             :key="item1.id">
             <el-col :span="4">
               <!-- 显示一级权限 -->
-              <el-tag>{{ item1.authName }}</el-tag>
+              <el-tag closable>{{ item1.authName }}</el-tag>
               <i class="el-icon-arrow-right"></i>
             </el-col>
             <!-- 二级和三级权限 -->
@@ -36,12 +37,14 @@
                 :key="item2.id">
                 <el-col :span="4">
                   <!-- 显示二级权限 -->
-                  <el-tag type="success">{{ item2.authName }}</el-tag>
+                  <el-tag closable type="success">{{ item2.authName }}</el-tag>
                   <i class="el-icon-arrow-right"></i>
                 </el-col>
                 <el-col :span="20">
                   <!-- 三级权限 -->
                   <el-tag
+                    class="level3"
+                    closable
                     type="warning"
                     v-for="item3 in item2.children"
                     :key="item3.id">
@@ -122,6 +125,13 @@ export default {
 <style>
 .row-add {
   margin-top: 10px;
+  margin-bottom: 10px;
+}
+.level3 {
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.level1 {
   margin-bottom: 10px;
 }
 </style>
