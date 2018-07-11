@@ -80,7 +80,7 @@
         <template slot-scope="scope">
           <el-button plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
           <el-button plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
-          <el-button @click="dialogVisible=true" plain size="mini" type="success" icon="el-icon-check" ></el-button>
+          <el-button @click="handleShowRightsDialog(scope.row)" plain size="mini" type="success" icon="el-icon-check" ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -185,6 +185,26 @@ export default {
 
       const { data } = resData;
       this.treeData = data;
+    },
+    // 点击按钮，显示分配权限的对话框
+    handleShowRightsDialog(role) {
+      this.dialogVisible = true;
+      // 获取当前角色所拥有的权限的id
+      
+      // 遍历一级权限
+      const arr = [];
+      role.children.forEach((item1) => {
+        // arr.push(item1.id);
+        // 遍历二级权限
+        item1.children.forEach((item2) => {
+          // arr.push(item2.id);
+          // 遍历三级权限
+          item2.children.forEach((item3) => {
+            arr.push(item3.id);
+          });
+        });
+      });
+      this.checkedList = arr;
     }
   }
 };
