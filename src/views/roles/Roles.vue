@@ -99,6 +99,7 @@
         default-checked-keys 设置默认选中的节点
        -->
       <el-tree
+        ref="tree"
         v-loading="loadingTree"
         :data="treeData"
         :props="defaultProps"
@@ -110,7 +111,7 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleSetRights">确 定</el-button>
       </span>
     </el-dialog>
   </el-card>
@@ -205,6 +206,18 @@ export default {
         });
       });
       this.checkedList = arr;
+    },
+    // 点击确定按钮，分配权限
+    handleSetRights() {
+      // 获取到被选中的节点的id
+      const checkedKeys = this.$refs.tree.getCheckedKeys();
+      // 获取到半选的节点的id
+      const halfCheckedKeys = this.$refs.tree.getHalfCheckedKeys();
+
+      console.log(checkedKeys);
+      console.log(halfCheckedKeys);
+
+      const newArray = [...checkedKeys, ...halfCheckedKeys];
     }
   }
 };
