@@ -26,10 +26,10 @@
             <el-col :span="4">
               <!-- 显示一级权限 -->
               <el-tag>{{ item1.authName }}</el-tag>
+              <i class="el-icon-arrow-right"></i>
             </el-col>
             <!-- 二级和三级权限 -->
             <el-col :span="20">
-
               <!-- 二级权限 -->
               <el-row
                 v-for="item2 in item1.children"
@@ -37,8 +37,17 @@
                 <el-col :span="4">
                   <!-- 显示二级权限 -->
                   <el-tag type="success">{{ item2.authName }}</el-tag>
+                  <i class="el-icon-arrow-right"></i>
                 </el-col>
-                <el-col :span="20"></el-col>
+                <el-col :span="20">
+                  <!-- 三级权限 -->
+                  <el-tag
+                    type="warning"
+                    v-for="item3 in item2.children"
+                    :key="item3.id">
+                    {{ item3.authName }}
+                  </el-tag>
+                </el-col>
               </el-row>
             </el-col>
           </el-row>
