@@ -34,7 +34,6 @@ MyAxios.install = function (Vue) {
   // 添加响应的拦截器
   instance.interceptors.response.use(function (response) {
     // Do something with response data
-    
     return response;
   }, function (error) {
     // Do something with response error
