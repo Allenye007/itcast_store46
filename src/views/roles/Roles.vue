@@ -87,6 +87,8 @@
 
     <!-- 分配权限的对话框 -->
     <el-dialog
+      v-loading="loadingTree"
+      @open="handleOpenDialog"
       title="分配权限"
       :visible.sync="dialogVisible">
 
@@ -115,12 +117,15 @@ export default {
     return {
       list: [],
       loading: true,
+      loadingTree: true,
       // 控制分配权限的对话框显示或隐藏
       dialogVisible: false,
       // 绑定tree所用的数据
       treeData: [],
       // 配置要展示数据中的哪个属性
       defaultProps: {
+        children: 'children',
+        label: 'authName'
       }
     };
   },
@@ -163,6 +168,15 @@ export default {
         // 失败
         this.$message.error(msg);
       }
+    },
+    // 打开对话框的时候执行
+    async handleOpenDialog() {
+      this.loadingTree = true;
+      const { data: resData } = await this.$http.get('rights/tree');
+
+      this.loadingTree = false;
+      const { data } = resData;
+      this.treeData = data;
     }
   }
 };
