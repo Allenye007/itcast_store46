@@ -5,7 +5,10 @@
 
     <el-row class="row-add">
       <el-col :span="24">
-        <el-button type="success" plain>添加分类</el-button>
+        <el-button
+          type="success"
+          plain
+          @click="handleShowAdd">添加分类</el-button>
       </el-col>
     </el-row>
 
@@ -16,11 +19,10 @@
       border
       :data="list"
       style="width: 100%">
-
       <!-- tree grid
         treeKey 绑定到id，给每一个节点设置一个唯一值
         parentKey 绑定到父id属性，区分父子节点
-        levelKey 绑定到层级的属性 
+        levelKey 绑定到层级的属性
         childKey 绑定到存储子元素的属性
        -->
       <el-tree-grid
@@ -71,6 +73,33 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+
+    <!-- 添加分类 -->
+    <el-dialog title="添加分类" :visible.sync="addFormDialog">
+      <el-form :model="addForm" ref="addForm">
+        <el-form-item label="分类名称" label-width="100px" prop="cat_name">
+          <el-input v-model="addForm.cat_name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="父级分类" label-width="100px">
+          <el-cascader
+            expand-trigger="hover"
+            :options="options"
+            change-on-select
+            :props="{
+              label: 'cat_name',
+              value: 'cat_id',
+              children: 'children'
+            }"
+            v-model="selectedOptions2">
+          </el-cascader>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addFormDialog = false">取 消</el-button>
+        <el-button type="primary" @click="handleAdd">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- /添加分类 -->
   </el-card>
 </template>
 
@@ -88,7 +117,13 @@ export default {
       // 分页数据
       pagenum: 1,
       pagesize: 5,
-      total: 0
+      total: 0,
+      addFormDialog: false,
+      addForm: {
+        cat_name: ''
+      },
+      selectedOptions2: [],
+      options: []
     };
   },
   created() {
@@ -107,16 +142,73 @@ export default {
       // 获取总条数
       this.total = total;
     },
+
     // 分页方法
     handleSizeChange(val) {
       this.pagesize = val;
       this.loadData();
       console.log(`每页 ${val} 条`);
     },
+
     handleCurrentChange(val) {
       this.pagenum = val;
       this.loadData();
       console.log(`当前页: ${val}`);
+    },
+
+    /**
+     * 处理弹出添加分类对话框
+     */
+    async handleShowAdd () {
+      this.addFormDialog = true;
+
+      // 获取商品分类数据绑定到级联选择器中
+      const res = await this.$http.get('/categories', {
+        params: {
+          type: 2
+        }
+      });
+      this.options = res.data.data;
+    },
+
+    /**
+     * 处理添加分类
+     */
+    async handleAdd () {
+      const formData = {
+        ...this.addForm,
+        cat_pid: this.selectedOptions2[this.selectedOptions2.length - 1],
+        cat_level: this.selectedOptions2.length
+      };
+
+      const res = await this.$http({
+        url: '/categories', // 请求路径
+        method: 'post', // method 指定请求方法
+        params: {}, // 查询字符串 ?xxx=xxx
+        data: formData // data 指定 post 请求体
+      });
+
+      if (res.data.meta.status === 201) {
+        // 隐藏添加分类对话框
+        this.addFormDialog = false;
+
+        // 清空表单数据
+        this.$refs['addForm'].resetFields();
+        this.selectedOptions2 = []; // 手动清空级联选择器组件选择的状态
+
+        // 重新加载列表数据
+        this.loadData();
+
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        });
+      } else {
+        this.$message({
+          message: '添加失败',
+          type: 'warning'
+        });
+      }
     }
   },
   components: {

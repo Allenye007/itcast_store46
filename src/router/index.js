@@ -52,6 +52,7 @@ const router = new Router({
 });
 
 // 路由的前置守卫
+// 全局守卫：任何视图的导航都会经过这里
 router.beforeEach((to, from, next) => {
   // console.log(to, from);
   // 判断当前访问的路由是否是login，如果是login直接next
