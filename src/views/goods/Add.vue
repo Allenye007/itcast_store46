@@ -67,7 +67,23 @@ export default {
   },
   methods: {
     async handleAdd () {
-      console.log(this.form)
+      const res = await this.$http({
+        url: '/goods',
+        method: 'post',
+        data: this.form
+      })
+      const { data, meta } = res.data
+      if (meta.status === 201) { // 添加成功
+        this.$message({
+          type: 'success',
+          message: meta.msg
+        })
+      } else if (meta.status === 400) {
+        this.$message({
+          type: 'warning',
+          message: meta.msg
+        })
+      }
     },
     handleGaiBianLe (data) {
       this.form.goods_cat = data.join(',')
