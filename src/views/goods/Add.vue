@@ -31,7 +31,9 @@
             <el-input v-model="form.goods_number"></el-input>
           </el-form-item>
           <el-form-item label="商品分类">
-            <CategoryCascader></CategoryCascader>
+            <CategoryCascader
+              type="3"
+              @gaibianle="handleGaiBianLe"></CategoryCascader>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="handleAdd">立即创建</el-button>
@@ -66,6 +68,9 @@ export default {
   methods: {
     async handleAdd () {
       console.log(this.form)
+    },
+    handleGaiBianLe (data) {
+      this.form.goods_cat = data.join(',')
     }
   },
   components: {

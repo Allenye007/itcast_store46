@@ -8,7 +8,8 @@
     value: 'cat_id',
     children: 'children'
   }"
-  v-model="selectedOptions2">
+  @change="handleChange"
+  v-model="selectedOptions">
 </el-cascader>
 </template>
 
@@ -35,9 +36,19 @@ export default {
     });
     this.options = res.data.data;
   },
+  methods: {
+    // 每当级联选择器选择的节点改变都会调用 handleChange 方法
+    // 我们可以在该方法内部把当前组件的数据通过事件的方式传递给父组件
+    handleChange () {
+      // 这里的含义就是对外部发布一个自定义事件，外部就是使用该组件的父组件
+      // 然后我们可以在调用该组件的时候，为其指定自定义事件处理函数来接收结果
+      this.$emit('gaibianle', this.selectedOptions)
+    }
+  },
   data () {
     return {
-      options: []
+      options: [],
+      selectedOptions: []
     }
   }
 }
