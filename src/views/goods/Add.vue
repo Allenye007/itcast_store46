@@ -7,7 +7,7 @@
     </el-row>
 
     <!-- 步骤条 -->
-    <el-steps :active="1" finish-status="success" align-center>
+    <el-steps :active="stepActive" finish-status="success" align-center>
       <el-step title="基本信息"></el-step>
       <el-step title="商品图片"></el-step>
       <el-step title="商品内容"></el-step>
@@ -15,8 +15,11 @@
     <!-- /步骤条 -->
 
     <!-- 标签页 -->
-    <el-tabs tab-position="left">
-      <el-tab-pane label="基本信息">
+    <el-tabs
+      tab-position="left"
+      v-model="activeName"
+      @tab-click="handleTabClick">
+      <el-tab-pane label="基本信息" name="0">
         <el-form ref="form" :model="form" label-width="80px" label-position="top">
           <el-form-item label="商品名称">
             <el-input v-model="form.goods_name"></el-input>
@@ -40,9 +43,17 @@
             <el-button>取消</el-button>
           </el-form-item> -->
         </el-form>
+        <el-button @click="handleNextStep">下一步</el-button>
       </el-tab-pane>
-      <el-tab-pane label="商品图片">商品图片</el-tab-pane>
-      <el-tab-pane label="商品详情">
+      <el-tab-pane label="商品图片" name="1">
+        商品图片
+        <el-row>
+          <el-col :span="4">
+            <el-button @click="handleNextStep">下一步</el-button>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+      <el-tab-pane label="商品详情" name="2">
         <quill-editor
           v-model="form.goods_introduce"
           ref="myQuillEditor"
@@ -78,7 +89,9 @@ export default {
         goods_number: '',
         goods_cat: '',
         goods_introduce: ''
-      }
+      },
+      activeName: '0',
+      stepActive: 0
     };
   },
   created () {
@@ -115,6 +128,23 @@ export default {
     onEditorReady () {
       console.log('onEditorReady')
     },
+
+    /**
+     * 处理点击下一步
+     */
+    handleNextStep () {
+      this.activeName = Number.parseInt(this.activeName) + 1 + ''
+      this.stepActive++
+    },
+
+    /**
+     * 处理 tabs 标签点击事件
+     */
+    handleTabClick (tab, event) {
+      // console.log('handleTabClick')
+      // console.log(tab.index)
+      this.stepActive = tab.index - 0
+    }
   },
   components: {
     CategoryCascader,
