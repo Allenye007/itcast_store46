@@ -58,7 +58,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
-          <el-button plain size="mini" type="danger" icon="el-icon-delete" ></el-button>
+          <el-button plain size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -209,6 +209,41 @@ export default {
           type: 'warning'
         });
       }
+    },
+
+    /**
+     * 处理删除分类
+     */
+    handleDelete (cat) {
+      this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const res = await this.$http({
+          url: `/categories/${cat.cat_id}`,
+          method: 'delete'
+        });
+        const { data, meta } = res.data;
+        if (meta.status === 200) {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+          // 重新加载数据
+          this.loadData();
+        } else {
+          this.$message({
+            message: '删除失败',
+            type: 'warning'
+          });
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   },
   components: {
