@@ -57,7 +57,7 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button plain size="mini" type="primary" icon="el-icon-edit" ></el-button>
+          <el-button plain size="mini" type="primary" icon="el-icon-edit" @click="handleShowEdit(scope.row)"></el-button>
           <el-button plain size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)"></el-button>
         </template>
       </el-table-column>
@@ -74,7 +74,7 @@
       :total="total">
     </el-pagination>
 
-    <!-- 添加分类 -->
+    <!-- 添加分类对话框 -->
     <el-dialog title="添加分类" :visible.sync="addFormDialog">
       <el-form :model="addForm" ref="addForm">
         <el-form-item label="分类名称" label-width="100px" prop="cat_name">
@@ -99,7 +99,21 @@
         <el-button type="primary" @click="handleAdd">确 定</el-button>
       </div>
     </el-dialog>
-    <!-- /添加分类 -->
+    <!-- /添加分类对话框 -->
+
+    <!-- 编辑分类对话框 -->
+    <el-dialog title="编辑分类" :visible.sync="editFormDialog">
+      <el-form :model="editForm" ref="addForm">
+        <el-form-item label="分类名称" label-width="100px" prop="cat_name">
+          <el-input v-model="editForm.cat_name" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editFormDialog = false">取 消</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
+      </div>
+    </el-dialog>
+    <!-- /编辑分类对话框 -->
   </el-card>
 </template>
 
@@ -123,7 +137,11 @@ export default {
         cat_name: ''
       },
       selectedOptions2: [],
-      options: []
+      options: [],
+      editFormDialog: false,
+      editForm: {
+        cat_name: ''
+      }
     };
   },
   created() {
@@ -244,6 +262,43 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+
+    /**
+     * 处理显示编辑分类弹框
+     */
+    handleShowEdit (cat) {
+      this.editForm = cat
+      this.editFormDialog = true
+    },
+
+    /**
+     * 处理编辑
+     */
+    async handleEdit () {
+      const { cat_id, cat_name } = this.editForm
+      const res = await this.$http({
+        url: `/categories/${cat_id}`,
+        data: {
+          cat_name
+        },
+        method: 'put'
+      })
+      const { data, meta } = res.data
+      if (meta.status === 200) {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+        // 重新加载数据
+        this.loadData()
+        this.editFormDialog = false
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '更新失败'
+        })
+      }
     }
   },
   components: {
