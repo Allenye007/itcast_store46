@@ -7,6 +7,7 @@
       <el-col :span="24">
         <el-button
           type="success"
+          @click="$router.push({name: 'goods-add'})"
           plain>添加商品</el-button>
       </el-col>
     </el-row>
