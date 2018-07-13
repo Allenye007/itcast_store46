@@ -35,14 +35,27 @@
               type="3"
               @gaibianle="handleGaiBianLe"></CategoryCascader>
           </el-form-item>
-          <el-form-item>
+          <!-- <el-form-item>
             <el-button type="primary" @click="handleAdd">立即创建</el-button>
             <el-button>取消</el-button>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="商品图片">商品图片</el-tab-pane>
-      <el-tab-pane label="商品内容">商品内容</el-tab-pane>
+      <el-tab-pane label="商品详情">
+        <quill-editor
+          v-model="form.goods_introduce"
+          ref="myQuillEditor"
+          @blur="onEditorBlur($event)"
+          @focus="onEditorFocus($event)"
+          @ready="onEditorReady($event)">
+        </quill-editor>
+        <el-row>
+          <el-col :span="4">
+            <el-button type="primary" @click="handleAdd">立即创建</el-button>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
     </el-tabs>
     <!-- /标签页 -->
   </el-card>
@@ -50,6 +63,10 @@
 
 <script>
 import CategoryCascader from '@/components/CategoryCascader'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor'
 
 export default {
   data () {
@@ -59,7 +76,8 @@ export default {
         goods_price: '',
         goods_weight: '',
         goods_number: '',
-        goods_cat: ''
+        goods_cat: '',
+        goods_introduce: ''
       }
     };
   },
@@ -87,10 +105,20 @@ export default {
     },
     handleGaiBianLe (data) {
       this.form.goods_cat = data.join(',')
-    }
+    },
+    onEditorBlur () {
+      console.log('onEditorBlur')
+    },
+    onEditorFocus () {
+      console.log('onEditorFocus')
+    },
+    onEditorReady () {
+      console.log('onEditorReady')
+    },
   },
   components: {
-    CategoryCascader
+    CategoryCascader,
+    quillEditor
   }
 };
 </script>
