@@ -15,24 +15,62 @@
     <!-- /步骤条 -->
 
     <!-- 标签页 -->
-    <el-tabs tab-position="left" style="height: 200px;">
-      <el-tab-pane label="用户管理">用户管理</el-tab-pane>
-      <el-tab-pane label="配置管理">配置管理</el-tab-pane>
-      <el-tab-pane label="角色管理">角色管理</el-tab-pane>
+    <el-tabs tab-position="left">
+      <el-tab-pane label="基本信息">
+        <el-form ref="form" :model="form" label-width="80px" label-position="top">
+          <el-form-item label="商品名称">
+            <el-input v-model="form.goods_name"></el-input>
+          </el-form-item>
+          <el-form-item label="商品价格">
+            <el-input v-model="form.goods_price"></el-input>
+          </el-form-item>
+          <el-form-item label="商品重量">
+            <el-input v-model="form.goods_weight"></el-input>
+          </el-form-item>
+          <el-form-item label="商品数量">
+            <el-input v-model="form.goods_number"></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类">
+            <CategoryCascader></CategoryCascader>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="handleAdd">立即创建</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="商品图片">商品图片</el-tab-pane>
+      <el-tab-pane label="商品内容">商品内容</el-tab-pane>
     </el-tabs>
     <!-- /标签页 -->
   </el-card>
 </template>
 
 <script>
+import CategoryCascader from '@/components/CategoryCascader'
+
 export default {
   data () {
     return {
+      form: {
+        goods_name: '',
+        goods_price: '',
+        goods_weight: '',
+        goods_number: '',
+        goods_cat: ''
+      }
     };
   },
   created () {
   },
-  methods: {}
+  methods: {
+    async handleAdd () {
+      console.log(this.form)
+    }
+  },
+  components: {
+    CategoryCascader
+  }
 };
 </script>
 
