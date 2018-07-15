@@ -61,7 +61,7 @@
           @focus="onEditorFocus($event)"
           @ready="onEditorReady($event)">
         </quill-editor>
-        <el-row>
+        <el-row style="margin-top: 75px;">
           <el-col :span="4">
             <el-button type="primary" @click="handleAdd">立即创建</el-button>
           </el-col>
@@ -155,5 +155,10 @@ export default {
 .row-add {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.quill-editor {
+  height: 300px;
+  margin-bottom: 15px;
 }
 </style>
