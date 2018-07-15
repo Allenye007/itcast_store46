@@ -242,7 +242,7 @@ export default {
           url: `/categories/${cat.cat_id}`,
           method: 'delete'
         });
-        const { data, meta } = res.data;
+        const { meta } = res.data;
         if (meta.status === 200) {
           this.$message({
             message: '删除成功',
@@ -268,36 +268,36 @@ export default {
      * 处理显示编辑分类弹框
      */
     handleShowEdit (cat) {
-      this.editForm = cat
-      this.editFormDialog = true
+      this.editForm = cat;
+      this.editFormDialog = true;
     },
 
     /**
      * 处理编辑
      */
     async handleEdit () {
-      const { cat_id, cat_name } = this.editForm
+      const { cat_id: catId, cat_name: catName } = this.editForm;
       const res = await this.$http({
-        url: `/categories/${cat_id}`,
+        url: `/categories/${catId}`,
         data: {
-          cat_name
+          catName
         },
         method: 'put'
-      })
-      const { data, meta } = res.data
+      });
+      const { meta } = res.data;
       if (meta.status === 200) {
         this.$message({
           type: 'success',
           message: '更新成功'
-        })
+        });
         // 重新加载数据
-        this.loadData()
-        this.editFormDialog = false
+        this.loadData();
+        this.editFormDialog = false;
       } else {
         this.$message({
           type: 'warning',
           message: '更新失败'
-        })
+        });
       }
     }
   },

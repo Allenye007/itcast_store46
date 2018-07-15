@@ -143,9 +143,16 @@ export default {
       });
       this.loading = false;
       const { data, meta } = resData;
-      this.list = data.goods;
-      // 获取总条数
-      this.total = data.total;
+      if (meta.status === 200) {
+        this.list = data.goods;
+        // 获取总条数
+        this.total = data.total;
+      } else {
+        this.$message({
+          type: 'warning',
+          message: '获取数据失败'
+        });
+      }
     },
 
     // 分页方法

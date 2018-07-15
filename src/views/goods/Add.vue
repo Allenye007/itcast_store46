@@ -73,11 +73,11 @@
 </template>
 
 <script>
-import CategoryCascader from '@/components/CategoryCascader'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import { quillEditor } from 'vue-quill-editor'
+import CategoryCascader from '@/components/CategoryCascader';
+import 'quill/dist/quill.core.css';
+import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.bubble.css';
+import { quillEditor } from 'vue-quill-editor';
 
 export default {
   data () {
@@ -102,48 +102,46 @@ export default {
         url: '/goods',
         method: 'post',
         data: this.form
-      })
-      const { data, meta } = res.data
+      });
+      const { meta } = res.data;
       if (meta.status === 201) { // 添加成功
         this.$message({
           type: 'success',
           message: meta.msg
-        })
+        });
       } else if (meta.status === 400) {
         this.$message({
           type: 'warning',
           message: meta.msg
-        })
+        });
       }
     },
     handleGaiBianLe (data) {
-      this.form.goods_cat = data.join(',')
+      this.form.goods_cat = data.join(',');
     },
     onEditorBlur () {
-      console.log('onEditorBlur')
+      console.log('onEditorBlur');
     },
     onEditorFocus () {
-      console.log('onEditorFocus')
+      console.log('onEditorFocus');
     },
     onEditorReady () {
-      console.log('onEditorReady')
+      console.log('onEditorReady');
     },
 
     /**
      * 处理点击下一步
      */
     handleNextStep () {
-      this.activeName = Number.parseInt(this.activeName) + 1 + ''
-      this.stepActive++
+      this.activeName = Number.parseInt(this.activeName) + 1 + '';
+      this.stepActive++;
     },
 
     /**
      * 处理 tabs 标签点击事件
      */
     handleTabClick (tab, event) {
-      // console.log('handleTabClick')
-      // console.log(tab.index)
-      this.stepActive = tab.index - 0
+      this.stepActive = tab.index - 0;
     }
   },
   components: {
