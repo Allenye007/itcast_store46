@@ -46,7 +46,28 @@
         <el-button @click="handleNextStep">下一步</el-button>
       </el-tab-pane>
       <el-tab-pane label="商品图片" name="1">
-        商品图片
+        <!--
+          上传组件封装的非常完整，你只要告诉它把图片上传到哪个接口路径就可以了
+          action 用来指定图片上传的地址
+          上传组件跟你的 axios 没有任何关系，所以你在 axios 中配置的基准路径在这里是无效
+          所以 action 我们要写完整的 url 路径
+          on-preview 预览图片的时候触发
+          on-remove 删除列表图片的时候触发
+          file-list 存储上传的图片数组
+            {name: xxx, url: xxx}
+          由于上传组件不是使用的 axios 发出的请求，所以你在 axios 中配置的请求拦截器也是无效的
+          所以 token 也就没有，需要我们自己来配置，使用 headers 属性
+         -->
+        <el-upload
+          action="http://localhost:8888/api/private/v1/upload"
+          :on-preview="handlePreview"
+          :headers="headers"
+          :on-remove="handleRemove"
+          :file-list="fileList2"
+          list-type="picture">
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
         <el-row>
           <el-col :span="4">
             <el-button @click="handleNextStep">下一步</el-button>
@@ -91,7 +112,17 @@ export default {
         goods_introduce: ''
       },
       activeName: '0',
-      stepActive: 0
+      stepActive: 0,
+      fileList2: [{
+        name: 'food.jpeg',
+        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+      }, {
+        name: 'food2.jpeg',
+        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+      }],
+      headers: {
+        Authorization: window.sessionStorage.getItem('token')
+      }
     };
   },
   created () {
@@ -142,6 +173,13 @@ export default {
      */
     handleTabClick (tab, event) {
       this.stepActive = tab.index - 0;
+    },
+
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
     }
   },
   components: {

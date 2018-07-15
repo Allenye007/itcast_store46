@@ -11,7 +11,7 @@
     "lintfix": "eslint --ext .js,.vue src --fix",
     "build": "node build/build.js",
     "prepush": "npm run lint",
-    "push": "git add . && git commit && git push origin dev-login"
+    "push": "git add . && git commit && git push origin master"
   },
   "dependencies": {
     "axios": "^0.18.0",
