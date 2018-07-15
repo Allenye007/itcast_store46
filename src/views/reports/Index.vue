@@ -13,11 +13,11 @@ export default {
   data () {
     return {
       pieChart: null
-    }
+    };
   },
 
   created () {
-    this.loadPieData()
+    this.loadPieData();
   },
 
   mounted () {
@@ -30,7 +30,7 @@ export default {
       },
       tooltip: {},
       legend: {
-        data:['销量']
+        data: ['销量']
       },
       xAxis: {
         data: []
@@ -54,10 +54,10 @@ export default {
           },
           tooltip: {},
           legend: {
-            data:['销量']
+            data: ['销量']
           },
           xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
           },
           yAxis: {},
           series: [{
@@ -69,10 +69,10 @@ export default {
 
         // 使用刚指定的配置项和数据显示图表。
         this.pieChart.setOption(option);
-      }, 2000)
+      }, 2000);
     }
   }
-}
+};
 </script>
 
 <style>
