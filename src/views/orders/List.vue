@@ -3,6 +3,17 @@
     <!-- 面包屑 -->
     <my-breadcrumb level1="订单管理" level2="订单列表"></my-breadcrumb>
 
+    <el-row>
+      <el-col :span="8">
+        <el-cascader
+          size="large"
+          :options="options"
+          v-model="selectedOptions"
+          @change="handleChange">
+        </el-cascader>
+      </el-col>
+    </el-row>
+
     <!-- 表格 -->
     <el-table
       class="tb"
@@ -56,10 +67,13 @@
 </template>
 
 <script>
+import { regionData } from 'element-china-area-data';
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      options: regionData,
+      selectedOptions: []
     };
   },
   created() {
@@ -86,6 +100,10 @@ export default {
           message: '加载数据失败'
         });
       }
+    },
+
+    handleChange () {
+      console.log('change');
     }
   }
 };
