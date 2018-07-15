@@ -85,6 +85,8 @@
             expand-trigger="hover"
             :options="options"
             change-on-select
+            clearable
+            placeholder="默认是一级分类"
             :props="{
               label: 'cat_name',
               value: 'cat_id',
@@ -193,9 +195,15 @@ export default {
      * 处理添加分类
      */
     async handleAdd () {
+      // 如果没有选择任何节点，则 cat_pid 是 0
+      let catPid = 0;
+      if (this.selectedOptions2[0]) {
+        catPid = this.selectedOptions2[this.selectedOptions2.length - 1];
+      }
+
       const formData = {
         ...this.addForm,
-        cat_pid: this.selectedOptions2[this.selectedOptions2.length - 1],
+        cat_pid: catPid,
         cat_level: this.selectedOptions2.length
       };
 
