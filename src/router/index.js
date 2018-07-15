@@ -13,6 +13,8 @@ import { Message } from 'element-ui';
 import OrderList from '@/views/orders/List';
 import Reports from '@/views/reports/Index';
 
+import NProgress from 'nprogress';
+
 Vue.use(Router);
 
 const router = new Router({
@@ -78,6 +80,8 @@ const router = new Router({
 // 路由的前置守卫
 // 全局守卫：任何视图的导航都会经过这里
 router.beforeEach((to, from, next) => {
+  // 每一次页面的导航都让 NProgress 启动
+  NProgress.start();
   // console.log(to, from);
   // 判断当前访问的路由是否是login，如果是login直接next
   if (to.name === 'login') {
@@ -94,6 +98,10 @@ router.beforeEach((to, from, next) => {
     }
     next();
   }
+});
+
+router.afterEach((to, from) => {
+  NProgress.done();
 });
 
 export default router;
