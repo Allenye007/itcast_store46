@@ -10,6 +10,7 @@ import Category from '@/views/goods/Category';
 import GoodsList from '@/views/goods/List';
 import GoodsAdd from '@/views/goods/Add';
 import { Message } from 'element-ui';
+import OrderList from '@/views/orders/List';
 
 Vue.use(Router);
 
@@ -57,6 +58,11 @@ const router = new Router({
           name: 'goods-add',
           path: 'goods/add',
           component: GoodsAdd
+        },
+        {
+          name: 'order-list',
+          path: 'orders',
+          component: OrderList
         }
       ]
     }
