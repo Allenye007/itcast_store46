@@ -2,6 +2,9 @@
   <el-card class="box-card">
     <!-- 面包屑 -->
     <my-breadcrumb level1="订单管理" level2="订单列表"></my-breadcrumb>
+    <el-button @click="handleMapMove">点击移动地图</el-button>
+    <!-- 地图容器 -->
+    <div id="bmap_container"></div>
 
     <el-row>
       <el-col :span="8">
@@ -68,16 +71,32 @@
 
 <script>
 import { regionData } from 'element-china-area-data';
+const { BMap } = window;
+
+// 这段代码不能放到这里执行
+// 因为此时的 HTML DOM 还没有生成呢
+// 因为这里的模板是由 Vue 管理的
+// 所以我们需要在保证 Vue 处理完成生成页面模板之后再去做 DOM 操作
+// const map = new BMap.Map("container");
+// const point = new BMap.Point(116.404, 39.915);
+// map.centerAndZoom(point, 15);
+
 export default {
   data() {
     return {
       list: [],
       options: regionData,
-      selectedOptions: []
+      selectedOptions: [],
+      map: null
     };
   },
   created() {
     this.loadData();
+  },
+  mounted () {
+    this.map = new BMap.Map('bmap_container');
+    const point = new BMap.Point(116.404, 39.915);
+    this.map.centerAndZoom(point, 15);
   },
   methods: {
     async loadData() {
@@ -104,6 +123,14 @@ export default {
 
     handleChange () {
       console.log('change');
+    },
+
+    handleMapMove () {
+      const { map } = this;
+      var point = new BMap.Point(116.404, 39.915);
+      map.centerAndZoom(point, 15);
+      var marker = new BMap.Marker(point); // 创建标注
+      map.addOverlay(marker);
     }
   }
 };
@@ -113,5 +140,10 @@ export default {
 
 .tb {
   margin-top: 10px;
+}
+
+#bmap_container {
+  width: 500px;
+  height: 300px;
 }
 </style>
