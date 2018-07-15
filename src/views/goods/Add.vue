@@ -63,6 +63,7 @@
           :on-preview="handlePreview"
           :headers="headers"
           :on-remove="handleRemove"
+          :on-success="handleUploadSuccess"
           :file-list="fileList2"
           list-type="picture">
           <el-button size="small" type="primary">点击上传</el-button>
@@ -109,7 +110,15 @@ export default {
         goods_weight: '',
         goods_number: '',
         goods_cat: '',
-        goods_introduce: ''
+        goods_introduce: '',
+        pics: [
+          // { pic: '图片路径' },
+          // { pic: '图片路径' },
+          // { pic: '图片路径' },
+          // { pic: '图片路径' },
+          // { pic: '图片路径' },
+          // { pic: '图片路径' },
+        ]
       },
       activeName: '0',
       stepActive: 0,
@@ -178,8 +187,18 @@ export default {
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
+
     handlePreview(file) {
       console.log(file);
+    },
+
+    handleUploadSuccess (response, file, fileList) {
+      // response 接口响应结果对象
+      // file 上传的文件对象
+      // fileList 文件列表数组
+      this.form.pics.push({
+        pic: response.data.tmp_path
+      });
     }
   },
   components: {
