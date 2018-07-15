@@ -3,7 +3,7 @@
     <!-- 面包屑 -->
     <my-breadcrumb level1="订单管理" level2="订单列表"></my-breadcrumb>
     <el-button @click="handleMapMove">点击移动地图</el-button>
-    <!-- 地图容器 -->
+    <!-- 地图容器，要有宽高 -->
     <div id="bmap_container"></div>
 
     <el-row>
@@ -71,6 +71,13 @@
 
 <script>
 import { regionData } from 'element-china-area-data';
+// 对于非 window 默认成员，使用的时候都加上 window 前缀（为了避免代码规范的警告）
+// 哪怕是 window 自己的成员，也建议加上 window 前缀（有利于代码阅读）
+// document 对象可以不需要
+// window.document.xxxx
+// window.setTimeout
+// window.setInterval
+// window.alert
 const { BMap } = window;
 
 // 这段代码不能放到这里执行
@@ -93,7 +100,7 @@ export default {
   created() {
     this.loadData();
   },
-  mounted () {
+  mounted () { // ** 注意：操作 DOM 必须写到这个生命周期函数中 **
     this.map = new BMap.Map('bmap_container');
     const point = new BMap.Point(116.404, 39.915);
     this.map.centerAndZoom(point, 15);

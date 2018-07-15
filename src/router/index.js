@@ -11,6 +11,7 @@ import GoodsList from '@/views/goods/List';
 import GoodsAdd from '@/views/goods/Add';
 import { Message } from 'element-ui';
 import OrderList from '@/views/orders/List';
+import Reports from '@/views/reports/Index';
 
 Vue.use(Router);
 
@@ -63,6 +64,11 @@ const router = new Router({
           name: 'order-list',
           path: 'orders',
           component: OrderList
+        },
+        {
+          name: 'reports',
+          path: 'reports',
+          component: Reports
         }
       ]
     }
