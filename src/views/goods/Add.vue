@@ -122,13 +122,7 @@ export default {
       },
       activeName: '0',
       stepActive: 0,
-      fileList2: [{
-        name: 'food.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }, {
-        name: 'food2.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }],
+      fileList2: [],
       headers: {
         Authorization: window.sessionStorage.getItem('token')
       }
@@ -185,7 +179,22 @@ export default {
     },
 
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      // 把数组中某个元素的 pic === file.response.data.tmp_path 元素移除
+
+      // 数组的 findIndex 方法用来遍历数组
+      // 没遍历一次就执行一次回调函数
+      // 在回调函数中执行 item.pic === file.response.data.tmp_path 判定条件
+      // 如果判定就结果为 true，则停止遍历，返回该元素的索引
+      // 如果遍历到最后都没有 true，则返回 -1
+      // 还有一个方法 find，和 findIndex 类似，一个返回索引，一个返回元素
+      const index = this.form.pics.findIndex(function (item) {
+        return item.pic === file.response.data.tmp_path;
+      });
+
+      if (index !== -1) {
+        // splice 方法可以删除数组元素，从 index 开始（包含 index），删除 1 个
+        this.form.pics.splice(index, 1);
+      }
     },
 
     handlePreview(file) {
