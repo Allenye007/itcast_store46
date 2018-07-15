@@ -1,19 +1,19 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// 导入组件
-import Login from '@/views/Login';
-import Home from '@/views/Home';
-import Users from '@/views/users/Users.vue';
-import Rights from '@/views/roles/Rights';
-import Roles from '@/views/roles/Roles';
-import Category from '@/views/goods/Category';
-import GoodsList from '@/views/goods/List';
-import GoodsAdd from '@/views/goods/Add';
 import { Message } from 'element-ui';
-import OrderList from '@/views/orders/List';
-import Reports from '@/views/reports/Index';
-
 import NProgress from 'nprogress';
+
+// 导入组件
+const Login = () => import('@/views/Login');
+const Home = () => import('@/views/Home');
+const Users = () => import('@/views/users/Users.vue');
+const Rights = () => import('@/views/roles/Rights');
+const Roles = () => import('@/views/roles/Roles');
+const Category = () => import('@/views/goods/Category');
+const GoodsList = () => import('@/views/goods/List');
+const GoodsAdd = () => import('@/views/goods/Add');
+const OrderList = () => import('@/views/orders/List');
+const Reports = () => import('@/views/reports/Index');
 
 Vue.use(Router);
 
